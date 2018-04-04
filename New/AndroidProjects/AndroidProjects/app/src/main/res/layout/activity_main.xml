@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.maxpower.bluetoothapp.MainActivity">
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/relativelayout">
+    <Button
+        android:id="@+id/buttonEnableBluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Bluetooth"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/buttonDiscover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Discovery Button"
+        tools:layout_editor_absoluteX="211dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_alignParentRight="true"/>
+
+    <Button
+        android:id="@+id/buttonQueeryKnownDevices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Queery Known Devices" />
+
+    <Button
+        android:id="@+id/buttonShowDevices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="See Devices" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/buttonDiscover"
+        android:layout_above="@id/buttonQueeryKnownDevices">
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonOpenForConnections"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/buttonShowDevices"
+        android:layout_toStartOf="@+id/buttonShowDevices"
+        android:text="Open" />
+</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

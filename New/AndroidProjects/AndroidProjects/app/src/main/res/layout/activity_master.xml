@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.maxpower.bluetoothapp.MasterActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linearlayout">
+
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:text="Pick Device Role"
+            android:textSize="20dp"
+            android:textColor="#0000"/>
+
+        <Button
+            android:id="@+id/buttonConnectToDevices"
+            android:layout_width="250dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_border"
+            android:text="Show Devices"
+            android:textColor="#FFFFFF"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="166dp" />
+        <Button
+            android:id="@+id/buttonStartStreaming"
+            android:layout_width="250dp"
+            android:layout_height="75dp"
+            android:text="Start streaming"
+            android:layout_marginBottom="30dp"
+            android:layout_gravity="center_horizontal"
+            tools:layout_editor_absoluteX="251dp"
+            tools:layout_editor_absoluteY="166dp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_border"/>
+        <Button
+            android:id="@+id/buttonStopStreaming"
+            android:layout_width="250dp"
+            android:layout_height="75dp"
+            android:text="Stop Streaming"
+            android:layout_marginBottom="30dp"
+            android:layout_gravity="center_horizontal"
+            tools:layout_editor_absoluteX="104dp"
+            tools:layout_editor_absoluteY="214dp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_border"/>
+
+        <Button
+            android:id="@+id/buttonShowConnectedDevices"
+            android:layout_width="250dp"
+            android:layout_height="75dp"
+            android:text="Show connected devices"
+            android:layout_gravity="center_horizontal"
+            tools:layout_editor_absoluteX="104dp"
+            tools:layout_editor_absoluteY="214dp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_border"/>
+
+
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
