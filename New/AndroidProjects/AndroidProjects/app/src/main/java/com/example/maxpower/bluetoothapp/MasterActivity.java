@@ -12,10 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MasterActivity extends AppCompatActivity {
 
@@ -23,10 +21,11 @@ public class MasterActivity extends AppCompatActivity {
     public static BluetoothAdapter bluetoothAdapter;
     String deviceName;
     BluetoothDevice btdevice;
-    public ArrayList<String> discoveredDeviceList = new ArrayList<>();
+    public static ArrayList<String> discoveredDeviceList = new ArrayList<String>();
+
     String deviceHardwareAddress;
     public int deviceCounter = 0;
-
+    public int arrayCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +46,7 @@ public class MasterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.e(TAG, "Show Devices Clicked");
+                bluetoothAdapter.cancelDiscovery();
                 startActivity(new Intent(MasterActivity.this, ShowDevicesActivity.class));
 
                // deviceName = ConnectThread.getDeviceName();
@@ -88,16 +88,23 @@ public class MasterActivity extends AppCompatActivity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 deviceName = device.getName();
                 deviceHardwareAddress = device.getAddress();
-                Log.e("BroadcastReceiver", "deviceName: " + deviceName + " Mac Address: " + deviceHardwareAddress);
+               // Log.e("BroadcastReceiver", "deviceName: " + deviceName + " Mac Address: " + deviceHardwareAddress);
                 if(!discoveredDeviceList.contains(deviceHardwareAddress)){
-                    Log.e("BroadCastReceiver", discoveredDeviceList.toString());
-                    discoveredDeviceList.add(deviceName + " " + deviceHardwareAddress);
+                //    Log.e("BroadCastReceiver", discoveredDeviceList.toString());
+                    //discoveredDeviceList.add(deviceName + " " + deviceHardwareAddress);
                     deviceCounter++;
-                    intent.putExtra(deviceName + deviceHardwareAddress, discoveredDeviceList);
+                    setList(deviceName + " " + deviceHardwareAddress);
                 }
             }
         }
     };
 
+    public ArrayList<String> getList() {
+        return discoveredDeviceList;
+    }
 
+    public void setList(String x) {
+        discoveredDeviceList.add(x);
+        arrayCounter++;
+    }
 }
