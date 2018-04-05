@@ -13,6 +13,8 @@ import java.util.UUID;
  */
 
 public class AcceptThread extends Thread {
+    public String remoteDeviceName;
+    SlaveActivity slaveActivity = new SlaveActivity();
     private final BluetoothServerSocket btSocket;
     private static final UUID MY_UUID =
             UUID.fromString("9a927a5e-f8d9-4028-a6a0-a92cd286e956");

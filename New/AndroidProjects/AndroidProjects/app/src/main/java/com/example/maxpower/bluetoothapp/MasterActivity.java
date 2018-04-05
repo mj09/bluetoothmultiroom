@@ -54,7 +54,7 @@ public class MasterActivity extends AppCompatActivity {
             }
         });
 
-        final Button startAudioStreaming = findViewById(R.id.buttonStartStreaming);
+  /*      final Button startAudioStreaming = findViewById(R.id.buttonStartStreaming);
         startAudioStreaming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +62,7 @@ public class MasterActivity extends AppCompatActivity {
                 Log.e(TAG, "Mediaplayer started");
             }
         });
-
+*/
         final Button showConnectedDevices = findViewById(R.id.buttonShowConnectedDevices);
         showConnectedDevices.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +70,7 @@ public class MasterActivity extends AppCompatActivity {
                 Log.e(TAG, "showConnectedDevices has started");
             }
         });
-
+/*
         final Button stopAudioStreaming = findViewById(R.id.buttonStopStreaming);
         stopAudioStreaming.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +78,7 @@ public class MasterActivity extends AppCompatActivity {
           //      mediaPlayer.stop();
                 Log.e(TAG, "Mediaplayer stopped");
             }
-        });
+        });*/
     }
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

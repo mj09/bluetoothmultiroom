@@ -28,7 +28,7 @@ public class ConnectThread extends Thread {
         Log.e("connectthread", "receivedDeviceName " + receivedDeviceName);
         receivedDeviceName = receivedDeviceName.substring(receivedDeviceName.length() - 17);
         Log.e("Connectthread", receivedDeviceName);
-        btDevice = btAdapter.getRemoteDevice("08:3D:88:25:8B:CA");
+        btDevice = btAdapter.getRemoteDevice(receivedDeviceName);
 
 
         UUID uuid = UUID.fromString("9a927a5e-f8d9-4028-a6a0-a92cd286e956");
