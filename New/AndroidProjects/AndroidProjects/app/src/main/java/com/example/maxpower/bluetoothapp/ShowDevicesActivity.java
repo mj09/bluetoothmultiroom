@@ -2,13 +2,20 @@ package com.example.maxpower.bluetoothapp;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,9 +26,17 @@ public class ShowDevicesActivity extends AppCompatActivity {
     public static BluetoothAdapter bluetoothAdapter;
     int pickedDevice = 0;
     private static String pickedDeviceName;
+    private Handler handler = new Handler();
+    private boolean buttonColourBoolean = false;
+    private int connectionStatus;
+    private static ArrayList<Integer> listOfClickedDevices;
+    private boolean closeSocketBoolean;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        listOfClickedDevices = new ArrayList<Integer>();
+        handler.postDelayed(runnable, 100);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Connectable Devices");
         ArrayList<String> discoveredDeviceList = masterActivity.getList();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_devices);
@@ -32,7 +47,37 @@ public class ShowDevicesActivity extends AppCompatActivity {
         CreateButtonListOfFoundDevices(discoveredDeviceList);
     }
 
-
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            connectionStatus = ConnectThread.getConnectionInteger();
+            if (connectionStatus == 1) {
+                Button button = findViewById(pickedDevice);
+                button.setBackgroundColor(Color.YELLOW);
+                ConnectThread.setConnectionStatus(0);
+                Toast.makeText(ShowDevicesActivity.this, "Connecting to " + button.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+            if (connectionStatus == 2) {
+                Button button = findViewById(pickedDevice);
+                button.setBackgroundColor(Color.GREEN);
+                ConnectThread.setConnectionStatus(0);
+                Toast.makeText(ShowDevicesActivity.this, "Connected to " + button.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+            if (connectionStatus == 3) {
+                Button button = findViewById(pickedDevice);
+                button.setBackgroundColor(Color.RED);
+                ConnectThread.setConnectionStatus(0);
+                Toast.makeText(ShowDevicesActivity.this, "Could not connect to " + button.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+            if (connectionStatus == 4) {
+                Button button = findViewById(pickedDevice);
+                button.setBackgroundColor(R.drawable.button_border);
+                ConnectThread.setConnectionStatus(0);
+                Toast.makeText(ShowDevicesActivity.this, "Could not connect to " + button.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+            handler.postDelayed(this, 100);
+        }
+    };
 
     private void CreateButtonListOfFoundDevices(final ArrayList<String> list){
         Log.e("CreateButtons", "Method started");
@@ -43,17 +88,26 @@ public class ShowDevicesActivity extends AppCompatActivity {
             final Button button = new Button(this);
             button.setId(x);
             button.setText(list.get(x));
-            button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+          //  button.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 0, 0, 30);
+            button.setLayoutParams(params);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.addView(button);
-
+            button.setBackgroundResource(R.drawable.button_border);
+            button.setTextColor(Color.WHITE);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     pickedDevice = button.getId();
-                    Log.e("CreateButton", "pickedDevice " + pickedDevice);
-                    setDeviceName(list.get(pickedDevice));
-                    ConnectToServer(btdevice);
+                    if(!listOfClickedDevices.contains(pickedDevice)) {
+                        Log.e("CreateButton", "pickedDevice " + pickedDevice);
+                        setDeviceName(list.get(pickedDevice));
+                        ConnectToServer(btdevice);
+                        listOfClickedDevices.add(pickedDevice);
+                    }
+                    else
+                        ConnectionHandler.connectionHandlerBoolean = false;
                 }
             });
         }
@@ -71,6 +125,4 @@ public class ShowDevicesActivity extends AppCompatActivity {
         ConnectThread connectThread = new ConnectThread(y);
         connectThread.start();
     }
-
-
 }

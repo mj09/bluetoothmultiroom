@@ -8,17 +8,20 @@ import android.os.Looper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SlaveActivity extends AppCompatActivity {
 
-    Handler handler = new Handler(Looper.getMainLooper());
     private final static String TAG = "SlaveActivity";
     public static BluetoothAdapter bluetoothAdapter;
+    private Handler handler = new Handler();
+    private int updateStatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slave);
+        handler.postDelayed(runnable, 100);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Slave Device");
@@ -31,12 +34,52 @@ public class SlaveActivity extends AppCompatActivity {
         AcceptThread acceptThread = new AcceptThread(bluetoothAdapter);
         acceptThread.start();
         Log.e(TAG, "AcceptThread has started");
+        String y = "Status of connection:";
+        TextView updateTextView = findViewById(R.id.updateTextView);
+        updateTextView.append(y);
     }
 
-    public void connectionAcceptMessage(String x) {
-        Toast.makeText(SlaveActivity.this, "Connection established with " + x, Toast.LENGTH_LONG);
-    }
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            updateStatus = AcceptThread.getUpdateInteger();
+            if (updateStatus == 1) {
+                TextView updateTextView = findViewById(R.id.updateTextView);
+                updateTextView.append(" \n");
+                String status = "Waiting for a connection";
+                updateTextView.append(status);
+                AcceptThread.setUpdateInteger(0);
+            }
+            if (updateStatus == 2) {
+                TextView updateTextView = findViewById(R.id.updateTextView);
+                updateTextView.append(" \n");
+                String status = "Device " + AcceptThread.getRemoteDeviceName() + " has connected";
+                updateTextView.append(status);
+                AcceptThread.setUpdateInteger(0);
+            }
+            if (updateStatus == 3) {
+                TextView updateTextView = findViewById(R.id.updateTextView);
+                updateTextView.append(" \n");
+                String status = "Socket accept method failed";
+                updateTextView.append(status);
+                AcceptThread.setUpdateInteger(0);
+            }
+            if (updateStatus == 4) {
+                TextView updateTextView = findViewById(R.id.updateTextView);
+                updateTextView.append(" \n");
+                String status = "Socket is closed";
+                updateTextView.append(status);
+                AcceptThread.setUpdateInteger(0);
+            }
+            if (updateStatus == 5) {
+                TextView updateTextView = findViewById(R.id.updateTextView);
+                updateTextView.append(" \n");
+                String status = "Closing socket";
+                updateTextView.append(status);
+                AcceptThread.setUpdateInteger(0);
+            }
+            handler.postDelayed(runnable, 100);
 
-
-
+        }
+    };
 }

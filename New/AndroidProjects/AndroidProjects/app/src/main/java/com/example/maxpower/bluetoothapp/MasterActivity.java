@@ -6,13 +6,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MasterActivity extends AppCompatActivity {
@@ -20,9 +24,7 @@ public class MasterActivity extends AppCompatActivity {
     private final static String TAG = "MasterActivity";
     public static BluetoothAdapter bluetoothAdapter;
     String deviceName;
-    BluetoothDevice btdevice;
     public static ArrayList<String> discoveredDeviceList = new ArrayList<String>();
-
     String deviceHardwareAddress;
     public int deviceCounter = 0;
     public int arrayCounter = 0;
@@ -31,16 +33,12 @@ public class MasterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master);
-      //  final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.song);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Master Device");
         bluetoothAdapter.startDiscovery();
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(broadcastReceiver, filter);
-
-
-
         final Button connectToDevices = findViewById(R.id.buttonConnectToDevices);
         connectToDevices.setOnClickListener(new View.OnClickListener() {
             @Override

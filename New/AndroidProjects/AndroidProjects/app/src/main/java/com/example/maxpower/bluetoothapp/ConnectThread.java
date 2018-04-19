@@ -3,6 +3,8 @@ package com.example.maxpower.bluetoothapp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import java.io.IOException;
@@ -19,10 +21,9 @@ public class ConnectThread extends Thread {
     String receivedDeviceName;
     BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     String tmp;
-    private static String getDeviceName;
+    static int connectionStatus = 0;
 
     public ConnectThread(BluetoothDevice btDevice){
-
         tmp = ShowDevicesActivity.getDeviceName();
         receivedDeviceName = tmp.toString();
         Log.e("connectthread", "receivedDeviceName " + receivedDeviceName);
@@ -42,6 +43,7 @@ public class ConnectThread extends Thread {
             } else {
                 temp = btDevice.createRfcommSocketToServiceRecord(uuid);
                 Log.e(TAG, "createRfcommSockerToServiceRecord" + uuid.toString());
+                setConnectionStatus(1);
             }
         }   catch (IOException e){
             Log.e("Connectthread()", "Method failed");
@@ -63,9 +65,11 @@ public class ConnectThread extends Thread {
             else {
                 btSocket.connect();
                 Log.e(TAG, "btsocket.connect");
-            }
+                setConnectionStatus(2);
+                    }
         }catch (IOException connectException){
             Log.e("ConnectThread run", "Unable to connect, closing socket and return");
+            setConnectionStatus(3);
             try{
                 btSocket.close();
             }catch (IOException closeException){
@@ -73,6 +77,26 @@ public class ConnectThread extends Thread {
             }
             return;
         }
+        ConnectionHandler connectionHandler = new ConnectionHandler(btSocket);
+        connectionHandler.start();
+
     }
 
+    public void cancel() {
+        try {
+            btSocket.close();
+            setConnectionStatus(4);
+            Log.e(TAG, "cancel - socket closed");
+        } catch (IOException e) {
+            Log.e(TAG, "Could not close client socket", e);
+        }
+    }
+
+    public static Integer getConnectionInteger() {
+        return connectionStatus;
+    }
+
+    public static void setConnectionStatus(int x) {
+        connectionStatus = x;
+    }
 }
