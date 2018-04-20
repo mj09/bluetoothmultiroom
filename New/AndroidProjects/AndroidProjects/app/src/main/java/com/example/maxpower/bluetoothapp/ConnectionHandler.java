@@ -3,6 +3,7 @@ package com.example.maxpower.bluetoothapp;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +21,7 @@ public class ConnectionHandler extends Thread {
     private byte[] buffer;
     public static boolean connectionHandlerBoolean = true;
     private String hello = "Hello";
+    File soundfile = new File(MasterActivity.filepath);
 
     public ConnectionHandler(BluetoothSocket socket) {
         bluetoothSocket = socket;
@@ -57,16 +59,27 @@ public class ConnectionHandler extends Thread {
 
             }*/
 
-      //  write(hello.getBytes());
+          write();
         }
     }
 
-    public void write(byte[] bytes) {
+    public void write() {
+
 
         try {
-            outputStream.write(bytes);
-        }catch (IOException e) {
-            Log.e(TAG, "Error when sending data ", e);
+            FileInputStream fileInputStream = new FileInputStream(soundfile);
+
+            byte buffer[] = new byte[2048];
+            int count;
+            while ((count = fileInputStream.read(buffer)) != -1)
+                try {
+                    outputStream.write(buffer, 0, count);
+                } catch (IOException e) {
+                    Log.e(TAG, "Error when sending data ", e);
+                }
+
+    }catch (IOException e) {
+            Log.e(TAG, e.toString());
         }
     }
 

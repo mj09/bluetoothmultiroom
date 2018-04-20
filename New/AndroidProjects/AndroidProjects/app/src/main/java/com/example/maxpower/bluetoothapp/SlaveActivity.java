@@ -4,14 +4,15 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.io.InputStream;
 
 public class SlaveActivity extends AppCompatActivity {
+
 
     private final static String TAG = "SlaveActivity";
     public static BluetoothAdapter bluetoothAdapter;
@@ -82,4 +83,8 @@ public class SlaveActivity extends AppCompatActivity {
 
         }
     };
+
+    private static synchronized void play(final InputStream in) throws Exception {
+
+    }
 }

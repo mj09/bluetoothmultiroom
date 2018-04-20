@@ -1,12 +1,10 @@
 package com.example.maxpower.bluetoothapp;
 
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.net.rtp.AudioStream;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class AudioServer extends Thread {
     private static String TAG = "AudioServer";
@@ -16,5 +14,11 @@ public class AudioServer extends Thread {
         File soundFile = AudioUtil.getSoundFile(args[0]);
 
         Log.e(TAG, "server: " + soundFile);
+
+        try {
+            FileInputStream in = new FileInputStream(soundFile);
+        }catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 }

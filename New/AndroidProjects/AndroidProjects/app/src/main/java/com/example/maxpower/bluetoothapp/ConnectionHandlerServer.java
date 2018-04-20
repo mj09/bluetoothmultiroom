@@ -4,10 +4,8 @@ import android.bluetooth.BluetoothSocket;
 import android.os.SystemClock;
 import android.util.Log;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public class ConnectionHandlerServer extends Thread {
     private static final String TAG = "ConnectionHandlerServer";

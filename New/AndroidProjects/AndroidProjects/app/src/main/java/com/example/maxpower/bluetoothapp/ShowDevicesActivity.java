@@ -3,13 +3,10 @@ package com.example.maxpower.bluetoothapp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -97,17 +94,24 @@ public class ShowDevicesActivity extends AppCompatActivity {
             button.setBackgroundResource(R.drawable.button_border);
             button.setTextColor(Color.WHITE);
             button.setOnClickListener(new View.OnClickListener() {
+                boolean hasbeenClicked = false;
+                ConnectThread connectThread;
                 @Override
                 public void onClick(View v) {
-                    pickedDevice = button.getId();
-                    if(!listOfClickedDevices.contains(pickedDevice)) {
-                        Log.e("CreateButton", "pickedDevice " + pickedDevice);
-                        setDeviceName(list.get(pickedDevice));
-                        ConnectToServer(btdevice);
-                        listOfClickedDevices.add(pickedDevice);
+                    if(hasbeenClicked)
+                        connectThread.cancel();
+                    else {
+                        pickedDevice = button.getId();
+                        if (!listOfClickedDevices.contains(pickedDevice)) {
+                            Log.e("CreateButton", "pickedDevice " + pickedDevice);
+                            setDeviceName(list.get(pickedDevice));
+                            connectThread = new ConnectThread(btdevice);
+                            connectThread.start();
+                            listOfClickedDevices.add(pickedDevice);
+                        } else
+                            ConnectionHandler.connectionHandlerBoolean = false;
                     }
-                    else
-                        ConnectionHandler.connectionHandlerBoolean = false;
+                    hasbeenClicked = !hasbeenClicked;
                 }
             });
         }

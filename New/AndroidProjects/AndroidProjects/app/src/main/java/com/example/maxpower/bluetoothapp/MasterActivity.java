@@ -1,21 +1,23 @@
 package com.example.maxpower.bluetoothapp;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -28,9 +30,10 @@ public class MasterActivity extends AppCompatActivity {
     String deviceHardwareAddress;
     public int deviceCounter = 0;
     public int arrayCounter = 0;
-
+    public static String filepath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        filepath = Environment.getExternalStorageDirectory() + "/Music/soundfile.mp3";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -52,15 +55,19 @@ public class MasterActivity extends AppCompatActivity {
             }
         });
 
-  /*      final Button startAudioStreaming = findViewById(R.id.buttonStartStreaming);
+        final Button startAudioStreaming = findViewById(R.id.buttonStartStreaming);
         startAudioStreaming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-        //        mediaPlayer.start();
-                Log.e(TAG, "Mediaplayer started");
+                boolean permissionGranted = ActivityCompat.checkSelfPermission(MasterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+                if(permissionGranted) {
+                    streamMusic();
+                }
+                else
+                    ActivityCompat.requestPermissions(MasterActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 200);
             }
         });
-*/
+
         final Button showConnectedDevices = findViewById(R.id.buttonShowConnectedDevices);
         showConnectedDevices.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,5 +111,17 @@ public class MasterActivity extends AppCompatActivity {
     public void setList(String x) {
         discoveredDeviceList.add(x);
         arrayCounter++;
+    }
+
+    public void streamMusic() {
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        filepath = Environment.getExternalStorageDirectory() + "/Music/soundfile.mp3";
+        try {
+            mediaPlayer.setDataSource(filepath);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 }
