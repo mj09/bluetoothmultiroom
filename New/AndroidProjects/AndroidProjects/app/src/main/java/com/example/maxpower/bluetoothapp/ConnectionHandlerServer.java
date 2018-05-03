@@ -1,26 +1,13 @@
 package com.example.maxpower.bluetoothapp;
 
 import android.bluetooth.BluetoothSocket;
-import android.content.Context;
-import android.media.AudioAttributes;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.media.MediaCodec;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.net.rtp.AudioStream;
-import android.nfc.Tag;
-import android.os.SystemClock;
-import android.provider.MediaStore;
-import android.renderscript.ScriptGroup;
 import android.util.Log;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 public class ConnectionHandlerServer extends Thread {
     private static final String TAG = "ConnectionHandlerServer";
@@ -58,7 +45,7 @@ public class ConnectionHandlerServer extends Thread {
 
     public void run() {
         Log.e(TAG, "Begin ConnectionHandlerServer");
-       byte[] buffer = new byte[128000];
+       byte[] buffer = new byte[MainScreen.bufferSize];
         int count;
         audioTrack.play();
         try {

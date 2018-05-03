@@ -4,10 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,10 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 public class MainScreen extends AppCompatActivity {
 
+    public final static int bufferSize = 2000;
     private final static int REQUEST_ENABLE_BT = 1;
     private final static String TAG = "MainScreen";
     public static BluetoothAdapter bluetoothAdapter;

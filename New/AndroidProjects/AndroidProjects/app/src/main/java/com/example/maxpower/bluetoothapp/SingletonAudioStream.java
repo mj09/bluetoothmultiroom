@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -13,22 +14,26 @@ public class SingletonAudioStream {
     private static SingletonAudioStream singletonAudioStream;
 
     private static String TAG = "SingletonAudioStream";
-    private static File soundFile = new File(MasterActivity.filepath);
-    static byte[] audioBuffer;
-    private SingletonAudioStream() {
+    private File soundFile = new File(MasterActivity.filepath);
+    byte[] audioBuffer = new byte[MainScreen.bufferSize];
 
+    FileInputStream fileInputStream;
+
+    private SingletonAudioStream() {
+        try {
+            fileInputStream = new FileInputStream(soundFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void streamMusic(OutputStream outputStream) {
+    public void streamMusic(OutputStream outputStream) {
         try {
-            FileInputStream fileInputStream = new FileInputStream(soundFile);
-
-            byte buffer[] = new byte[128000];
             int count;
 
-            while ((count = fileInputStream.read(buffer)) != -1) {
+            while ((count = fileInputStream.read(audioBuffer)) != -1) {
                 try {
-                    outputStream.write(buffer, 0, count);
+                    outputStream.write(audioBuffer, 0, count);
                //    setAudioBuffer(buffer, count);
                 } catch (IOException e) {
                     Log.e(TAG, "Error when sending data " + e);
@@ -40,11 +45,11 @@ public class SingletonAudioStream {
         }
     }
 
-    public static byte[] getAudioBuffer() {
+    public byte[] getAudioBuffer() {
         return audioBuffer;
     }
 
-    public static void setAudioBuffer(byte[] x, int b) {
+    public void setAudioBuffer(byte[] x, int b) {
         audioBuffer = Arrays.copyOf(x, b);
     }
 

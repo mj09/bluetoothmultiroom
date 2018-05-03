@@ -1,11 +1,8 @@
 package com.example.maxpower.bluetoothapp;
 
 import android.bluetooth.BluetoothSocket;
-import android.os.SystemClock;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -66,7 +63,7 @@ public class ConnectionHandler extends Thread {
         // audioStream.streamAudio(outputStream);
         //audioStream.start();
 
-        SingletonAudioStream.streamMusic(outputStream);
+        SingletonAudioStream.getSingletonAudioStream().streamMusic(outputStream);
       //  byte[] buffer;
 
        /* while (connectionHandlerBoolean)
