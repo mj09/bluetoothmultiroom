@@ -1,6 +1,7 @@
 package com.example.maxpower.bluetoothapp;
 
 import android.bluetooth.BluetoothSocket;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.io.File;
@@ -16,18 +17,17 @@ import java.io.OutputStream;
 public class ConnectionHandler extends Thread {
     private static final String TAG = "ConnectionHandler";
     private final BluetoothSocket bluetoothSocket;
- //   private final InputStream inputStream;
+    //   private final InputStream inputStream;
     private final OutputStream outputStream;
-    private byte[] buffer;
+    boolean startAudioOnce = true;
     public static boolean connectionHandlerBoolean = true;
-    private String hello = "Hello";
-    File soundfile = new File(MasterActivity.filepath);
+    AudioStream audioStream;
+
 
     public ConnectionHandler(BluetoothSocket socket) {
         bluetoothSocket = socket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
-
      /*   try {
             tmpIn = socket.getInputStream();
         } catch (IOException e) {
@@ -36,19 +36,18 @@ public class ConnectionHandler extends Thread {
 
         try {
             tmpOut = socket.getOutputStream();
-
         } catch (IOException e) {
             Log.e(TAG, "Error when creating outputstream");
         }
 
-    //    inputStream = tmpIn;
+        //    inputStream = tmpIn;
         outputStream = tmpOut;
     }
 
     public void run() {
         //  buffer = new byte[1024];
         //  int numBytes;
-        while (connectionHandlerBoolean) {
+        //while (connectionHandlerBoolean) {
           /*  try {
                 numBytes = inputStream.read(buffer);
                 Log.e(TAG, buffer.toString());
@@ -59,28 +58,26 @@ public class ConnectionHandler extends Thread {
 
             }*/
 
-          write();
-        }
+        write();
+        // }
     }
 
     public void write() {
+        // audioStream.streamAudio(outputStream);
+        //audioStream.start();
 
+        SingletonAudioStream.streamMusic(outputStream);
+      //  byte[] buffer;
 
-        try {
-            FileInputStream fileInputStream = new FileInputStream(soundfile);
+       /* while (connectionHandlerBoolean)
+            try {
+                buffer = SingletonAudioStream.getAudioBuffer();
+                Log.e(TAG, "buffer " + buffer);
+                outputStream.write(buffer, 0, buffer.length);
 
-            byte buffer[] = new byte[2048];
-            int count;
-            while ((count = fileInputStream.read(buffer)) != -1)
-                try {
-                    outputStream.write(buffer, 0, count);
-                } catch (IOException e) {
-                    Log.e(TAG, "Error when sending data ", e);
-                }
-
-    }catch (IOException e) {
-            Log.e(TAG, e.toString());
-        }
+            } catch (IOException e) {
+                Log.e(TAG, "Error when sending data " + e);
+            }*/
     }
 
 

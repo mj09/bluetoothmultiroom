@@ -2,14 +2,17 @@ package com.example.maxpower.bluetoothapp;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class SlaveActivity extends AppCompatActivity {
 
@@ -18,6 +21,7 @@ public class SlaveActivity extends AppCompatActivity {
     public static BluetoothAdapter bluetoothAdapter;
     private Handler handler = new Handler();
     private int updateStatus;
+    private static MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +88,4 @@ public class SlaveActivity extends AppCompatActivity {
         }
     };
 
-    private static synchronized void play(final InputStream in) throws Exception {
-
-    }
 }

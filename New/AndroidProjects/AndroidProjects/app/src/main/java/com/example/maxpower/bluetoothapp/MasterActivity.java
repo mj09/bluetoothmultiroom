@@ -33,7 +33,7 @@ public class MasterActivity extends AppCompatActivity {
     public static String filepath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        filepath = Environment.getExternalStorageDirectory() + "/Music/soundfile.mp3";
+        filepath = Environment.getExternalStorageDirectory() + "/Music/song1.wav";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -42,6 +42,7 @@ public class MasterActivity extends AppCompatActivity {
         bluetoothAdapter.startDiscovery();
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(broadcastReceiver, filter);
+
         final Button connectToDevices = findViewById(R.id.buttonConnectToDevices);
         connectToDevices.setOnClickListener(new View.OnClickListener() {
             @Override

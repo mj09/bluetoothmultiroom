@@ -77,6 +77,7 @@ public class ConnectThread extends Thread {
             }
             return;
         }
+
         ConnectionHandler connectionHandler = new ConnectionHandler(btSocket);
         connectionHandler.start();
 

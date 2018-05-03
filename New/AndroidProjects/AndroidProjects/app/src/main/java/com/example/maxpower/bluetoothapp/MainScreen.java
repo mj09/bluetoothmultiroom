@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -54,7 +55,6 @@ public class MainScreen extends AppCompatActivity {
                     Log.e(TAG, "Bluetooth is not enabled");
                 }
                 else {
-                    //go to slave activity
                     Log.e(TAG, "buttonSlave clicked");
                     startActivity(new Intent(MainScreen.this, SlaveActivity.class));
                 }
