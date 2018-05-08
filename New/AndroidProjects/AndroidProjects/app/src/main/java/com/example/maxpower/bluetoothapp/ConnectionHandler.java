@@ -6,7 +6,6 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 /**
  * Created by Michael on 04-04-2018.
@@ -66,6 +65,7 @@ public class ConnectionHandler extends Thread {
         MainScreen.hasSent.add(false);
         Log.e(TAG, "Number of playing devices: " +streamers);
         SingletonAudioStream.getSingletonAudioStream().streamMusic(outputStream);
+        Log.e(TAG, "Hello");
       //  byte[] buffer;
 
        /* while (connectionHandlerBoolean)

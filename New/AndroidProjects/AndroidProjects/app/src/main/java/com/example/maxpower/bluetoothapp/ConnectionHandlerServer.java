@@ -13,12 +13,10 @@ public class ConnectionHandlerServer extends Thread {
     private static final String TAG = "ConnectionHandlerServer";
     private final BluetoothSocket bluetoothSocket;
     private final InputStream inputStream;
- //   private byte[] buffer;
     public static boolean connectionHandlerBoolean = true;
-    private String hello = "Hello";
+
     int minSize = AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
     AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, minSize, AudioTrack.MODE_STREAM);
-    boolean removeWaveHeader = true;
 
     public ConnectionHandlerServer(BluetoothSocket socket) {
         bluetoothSocket = socket;
@@ -55,26 +53,6 @@ public class ConnectionHandlerServer extends Thread {
         } catch (IOException e) {
 
         }
-
-   /*    while(connectionHandlerBoolean) {
-           try {
-           //    if(inputStream.available() > 0) {
-             //  while((count = inputStream.read(buffer)) != -1) {
-                    inputStream.read(buffer);
-                    audioTrack.write(buffer, 0, buffer.length);
-                    audioTrack.play();
-             //  }
-                     //  audioTrack.flush();
-                    //   Log.e(TAG, "Received msg " + Integer.toString(bytes));
-
-            //   }
-             //  else SystemClock.sleep(100);
-           } catch (IOException e) {
-               Log.e(TAG, "disconnected", e);
-               break;
-           }
-       }*/
-
     }
 
     public boolean getConnectionHandlerBoolean() {

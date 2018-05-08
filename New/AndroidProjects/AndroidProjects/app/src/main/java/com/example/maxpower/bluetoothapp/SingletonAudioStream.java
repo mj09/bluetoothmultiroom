@@ -5,12 +5,8 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class SingletonAudioStream {
 
@@ -20,20 +16,15 @@ public class SingletonAudioStream {
     private File soundFile = new File(MasterActivity.filepath);
     byte[] audioBuffer = new byte[MainScreen.bufferSize];
     public static FileInputStream fileInputStream;
-
+    private final ProducerConsumer producerConsumer = new ProducerConsumer();
 
     private SingletonAudioStream() {
-
         try {
             fileInputStream = new FileInputStream(soundFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
 
-    public void streamMusic(final OutputStream outputStream) {
-
-        final ProducerConsumer producerConsumer = new ProducerConsumer();
 
         Thread producerThread = new Thread(new Runnable() {
             @Override
@@ -45,6 +36,11 @@ public class SingletonAudioStream {
                 }
             }
         });
+        producerThread.start();
+
+    }
+    public void streamMusic(final OutputStream outputStream) {
+
         Thread consumerThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -55,12 +51,9 @@ public class SingletonAudioStream {
                 }
             }
         });
-
-        producerThread.start();
+        Log.d(TAG, "Before consumerthread.start");
         consumerThread.start();
-
         try {
-            producerThread.join();
             consumerThread.join();
         } catch (InterruptedException e) {
             e.toString();

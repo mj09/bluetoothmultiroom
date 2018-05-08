@@ -12,13 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainScreen extends AppCompatActivity {
     public final static ArrayList<Boolean> hasSent = new ArrayList<>();
     public final static ArrayList<Integer> streamerList = new ArrayList<>();
-    public final static int bufferSize = 44000;
+    public final static int bufferSize = 7000;
     private final static int REQUEST_ENABLE_BT = 1;
     private final static String TAG = "MainScreen";
     public static BluetoothAdapter bluetoothAdapter;
