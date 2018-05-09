@@ -37,7 +37,7 @@ public class MainScreen extends AppCompatActivity {
                     Log.e(TAG, "Bluetooth is not enabled");
                 }
                 else {
-                    //go to master activity
+                    VariablesAndMethods.isMaster = true;
                     Log.e(TAG, "buttonMaster clicked");
                     startActivity(new Intent(MainScreen.this, MasterActivity.class));
                 }
@@ -72,6 +72,7 @@ public class MainScreen extends AppCompatActivity {
                 else {
                     //go to master slave activity
                     Log.e(TAG, "buttonMasterSlave clicked");
+                    VariablesAndMethods.isMaster = false;
                     startActivity(new Intent(MainScreen.this, MasterSlaveActivity.class));
                 }
             }

@@ -14,6 +14,7 @@ public class ProducerConsumer {
     private byte[] audioBuffer = new byte[MainScreen.bufferSize];
     private int count;
     private int consumerCount;
+
     public void consume(OutputStream outputStream) throws InterruptedException {
         int id = getID();
         while(true) {
@@ -37,6 +38,26 @@ public class ProducerConsumer {
                 }
         }
     }
+
+    public void produceMasterSlave() throws InterruptedException{
+        try {
+            while ((count = ConnectionHandlerServer.inputStream.read(audioBuffer)) != -1) {
+                synchronized (this) {
+                    Log.e(TAG, "Producer has started. Streamers: " + ConnectionHandler.streamers);
+                    //  Log.e(TAG, "Read file");
+                    MainScreen.streamerList.clear();
+                    notifyAll();
+                    while (MainScreen.streamerList.size() < ConnectionHandler.streamers) {
+                        Log.e(TAG, "Producer - wait");
+                        wait();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
     public void produce() throws InterruptedException{
         try {
             while ((count = SingletonAudioStream.fileInputStream.read(audioBuffer)) != -1) {

@@ -26,14 +26,14 @@
             android:id="@+id/buttonOpenForConnections"
             android:layout_width="250dp"
             android:layout_height="75dp"
-            android:text="Open for connections"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
             android:layout_gravity="center_horizontal"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="166dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_border"
+            android:text="Show Devices"
             android:textColor="#FFFFFF"
-            android:background="@drawable/button_border"/>
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="166dp" />
         <Button
             android:id="@+id/buttonConnectToDevices"
             android:layout_width="250dp"

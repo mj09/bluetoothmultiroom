@@ -22,61 +22,25 @@ public class ConnectionHandler extends Thread {
 
     public ConnectionHandler(BluetoothSocket socket) {
         bluetoothSocket = socket;
-        InputStream tmpIn = null;
         OutputStream tmpOut = null;
-     /*   try {
-            tmpIn = socket.getInputStream();
-        } catch (IOException e) {
-            Log.e(TAG, "Error when creating inputstream");
-        }*/
-
         try {
             tmpOut = socket.getOutputStream();
         } catch (IOException e) {
             Log.e(TAG, "Error when creating outputstream");
         }
-
-        //    inputStream = tmpIn;
         outputStream = tmpOut;
     }
 
     public void run() {
-        //  buffer = new byte[1024];
-        //  int numBytes;
-        //while (connectionHandlerBoolean) {
-          /*  try {
-                numBytes = inputStream.read(buffer);
-                Log.e(TAG, buffer.toString());
-                //use input to something
-            } catch (IOException e) {
-                Log.e(TAG, "Inputstream disconnected", e);
-                break;
-
-            }*/
-
         write();
-        // }
     }
 
     public void write() {
-        // audioStream.streamAudio(outputStream);
-        //audioStream.start();
         streamers++;
         MainScreen.hasSent.add(false);
-        Log.e(TAG, "Number of playing devices: " +streamers);
+        Log.e(TAG, "Number of playing devices: " + streamers);
         SingletonAudioStream.getSingletonAudioStream().streamMusic(outputStream);
         Log.e(TAG, "Hello");
-      //  byte[] buffer;
-
-       /* while (connectionHandlerBoolean)
-            try {
-                buffer = SingletonAudioStream.getAudioBuffer();
-                Log.e(TAG, "buffer " + buffer);
-                outputStream.write(buffer, 0, buffer.length);
-
-            } catch (IOException e) {
-                Log.e(TAG, "Error when sending data " + e);
-            }*/
     }
 
 

@@ -2,7 +2,10 @@ package com.example.maxpower.bluetoothapp;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,28 +15,38 @@ import android.widget.Button;
 
 public class MasterSlaveActivity extends AppCompatActivity {
 
-    public static BluetoothAdapter bluetoothAdapter;
     private final static String TAG = "MasterSlaveActivity";
-    BluetoothDevice btdevice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_slave);
 
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Master Slave Device");
+
+        VariablesAndMethods.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        VariablesAndMethods.bluetoothAdapter.startDiscovery();
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(broadcastReceiver, filter);
+
+        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+        startActivity(discoverableIntent);
+        Log.e(TAG, "Device is in discoverable mode");
+
+        AcceptThread acceptThread = new AcceptThread(VariablesAndMethods.bluetoothAdapter);
+        acceptThread.start();
+        Log.e(TAG, "AcceptThread has started");
+
+
 
         final Button openForConnections = findViewById(R.id.buttonOpenForConnections);
         openForConnections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-                discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-                startActivity(discoverableIntent);
-                AcceptThread acceptThread = new AcceptThread(bluetoothAdapter);
-                acceptThread.start();
-                Log.e(TAG, "openForConnections has started");
+                VariablesAndMethods.bluetoothAdapter.cancelDiscovery();
+                startActivity(new Intent(MasterSlaveActivity.this, ShowDevicesActivity.class));
             }
         });
 
@@ -42,9 +55,6 @@ public class MasterSlaveActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ConnectThread connectThread = new ConnectThread(btdevice);
-                connectThread.start();
-                Log.e(TAG, "connectToDevices has started");
             }
         });
 
@@ -56,4 +66,21 @@ public class MasterSlaveActivity extends AppCompatActivity {
             }
         });
     }
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(BluetoothDevice.ACTION_FOUND.equals(action)){
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                VariablesAndMethods.deviceName = device.getName();
+                VariablesAndMethods.deviceHardwareAddress = device.getAddress();
+                Log.e("BroadcastReceiver", "deviceName: " + VariablesAndMethods.deviceName + " Mac Address: " + VariablesAndMethods.deviceHardwareAddress);
+                if(!VariablesAndMethods.discoveredDeviceList.contains(VariablesAndMethods.deviceHardwareAddress)){
+                    //    Log.e("BroadCastReceiver", discoveredDeviceList.toString());
+                    //discoveredDeviceList.add(deviceName + " " + deviceHardwareAddress);
+                    VariablesAndMethods.discoveredDeviceList.add(VariablesAndMethods.deviceName + " " + VariablesAndMethods.deviceHardwareAddress);
+                }
+            }
+        }
+    };
 }

@@ -21,7 +21,6 @@ public class SlaveActivity extends AppCompatActivity {
     public static BluetoothAdapter bluetoothAdapter;
     private Handler handler = new Handler();
     private int updateStatus;
-    private static MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +83,6 @@ public class SlaveActivity extends AppCompatActivity {
                 AcceptThread.setUpdateInteger(0);
             }
             handler.postDelayed(runnable, 100);
-
         }
     };
-
 }

@@ -11,7 +11,7 @@ import java.nio.file.Files;
 
 public class AudioStream{
     private static String TAG = "AudioStream";
-    private File soundFile = new File(MasterActivity.filepath);
+    private File soundFile = new File(VariablesAndMethods.filePath);
     byte audioBuffer[] = new byte[44100];
     byte[] data = new byte[(int) 44100];
     boolean x = true;

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 public class ShowDevicesActivity extends AppCompatActivity {
     BluetoothDevice btdevice;
-    MasterActivity masterActivity = new MasterActivity();
     private final static String TAG = "ShowDevicesActivity";
     public static BluetoothAdapter bluetoothAdapter;
     int pickedDevice = 0;
@@ -34,10 +33,9 @@ public class ShowDevicesActivity extends AppCompatActivity {
         handler.postDelayed(runnable, 100);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Connectable Devices");
-        ArrayList<String> discoveredDeviceList = masterActivity.getList();
+        ArrayList<String> discoveredDeviceList = VariablesAndMethods.discoveredDeviceList;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_devices);
-        Log.e(TAG, "OnCreate - before for loop" + masterActivity.arrayCounter);
         for (int x = 0; x < discoveredDeviceList.size(); x++) {
             Log.e(TAG, discoveredDeviceList.get(x));
         }

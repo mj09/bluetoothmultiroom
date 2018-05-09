@@ -49,14 +49,10 @@ public class ConnectThread extends Thread {
             Log.e("Connectthread()", "Method failed");
         }
         btSocket = temp;
-
-        //if(btSocket.getRemoteDevice().toString() != null)
-          //  setDeviceName(btSocket.getRemoteDevice().toString());
     }
 
     public void run(){
             btAdapter.cancelDiscovery();
-
         try{
             if(btSocket == null) {
                 Log.e(TAG, "Btsocket is null");
@@ -80,9 +76,7 @@ public class ConnectThread extends Thread {
 
         ConnectionHandler connectionHandler = new ConnectionHandler(btSocket);
         connectionHandler.start();
-
     }
-
     public void cancel() {
         try {
             btSocket.close();

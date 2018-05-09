@@ -12,7 +12,8 @@ import java.io.InputStream;
 public class ConnectionHandlerServer extends Thread {
     private static final String TAG = "ConnectionHandlerServer";
     private final BluetoothSocket bluetoothSocket;
-    private final InputStream inputStream;
+  //  private final InputStream inputStream;
+    public static InputStream inputStream;
     public static boolean connectionHandlerBoolean = true;
 
     int minSize = AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
@@ -21,7 +22,6 @@ public class ConnectionHandlerServer extends Thread {
     public ConnectionHandlerServer(BluetoothSocket socket) {
         bluetoothSocket = socket;
         InputStream tmpIn = null;
-       // OutputStream tmpOut = null;
         Log.e(TAG, "buffersize " + minSize);
         try {
             tmpIn = socket.getInputStream();
@@ -29,16 +29,7 @@ public class ConnectionHandlerServer extends Thread {
         } catch (IOException e) {
             Log.e(TAG, "Error when creating inputstream");
         }
-
-     /*   try {
-            tmpOut = socket.getOutputStream();
-
-        } catch (IOException e) {
-            Log.e(TAG, "Error when creating outputstream");
-        }*/
-
         inputStream = tmpIn;
-      //  outputStream = tmpOut;
     }
 
     public void run() {

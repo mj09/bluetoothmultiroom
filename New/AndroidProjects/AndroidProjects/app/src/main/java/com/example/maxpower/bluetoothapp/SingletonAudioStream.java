@@ -13,34 +13,45 @@ public class SingletonAudioStream {
     private static SingletonAudioStream singletonAudioStream;
 
     private static String TAG = "SingletonAudioStream";
-    private File soundFile = new File(MasterActivity.filepath);
+
     byte[] audioBuffer = new byte[MainScreen.bufferSize];
     public static FileInputStream fileInputStream;
     private final ProducerConsumer producerConsumer = new ProducerConsumer();
 
     private SingletonAudioStream() {
-        try {
-            fileInputStream = new FileInputStream(soundFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
-        Thread producerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    producerConsumer.produce();
-                } catch (InterruptedException e) {
-                    Log.e(TAG, e.toString());
-                }
+        if(VariablesAndMethods.isMaster) {
+            try {
+                fileInputStream = new FileInputStream(MasterActivity.soundFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        });
-        producerThread.start();
-
+            Thread producerThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        producerConsumer.produce();
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, e.toString());
+                    }
+                }
+            });
+            producerThread.start();
+        }
+        else if(!VariablesAndMethods.isMaster) {
+            Thread producerMasterSlaveThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        producerConsumer.produceMasterSlave();
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, e.toString());
+                    }
+                }
+            });
+            producerMasterSlaveThread.start();
+        }
     }
     public void streamMusic(final OutputStream outputStream) {
-
         Thread consumerThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -58,20 +69,6 @@ public class SingletonAudioStream {
         } catch (InterruptedException e) {
             e.toString();
         }
-   /*     try {
-            int count;
-
-            while ((count = fileInputStream.read(audioBuffer)) != -1) {
-                try {
-                    outputStream.write(audioBuffer, 0, count);
-                } catch (IOException e) {
-                    Log.e(TAG, "Error when sending data " + e);
-                }
-            }
-
-        } catch (IOException e) {
-            Log.e(TAG, e.toString());
-        }*/
     }
 
     public byte[] getAudioBuffer() {
