@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -19,18 +18,19 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class MasterActivity extends AppCompatActivity {
 
     private final static String TAG = "MasterActivity";
-    public static File soundFile = new File(VariablesAndMethods.filePath);
+
+    public static File soundFile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        VariablesAndMethods.filePath = Environment.getExternalStorageDirectory() + "/Music/song1.wav";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master);
+
+        VariablesAndMethods.filePath = Environment.getExternalStorageDirectory() + "/Music/song1.wav";
+        soundFile = new File(VariablesAndMethods.filePath);
         VariablesAndMethods.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Master Device");

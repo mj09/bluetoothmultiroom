@@ -1,13 +1,6 @@
 package com.example.maxpower.bluetoothapp;
 
-import android.Manifest;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothSocket;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -21,6 +14,8 @@ public class VariablesAndMethods {
     public static String filePath;
 
     //Integers
+    public static int sampleRateofDevice;
+    public static int framesPerBuffer;
 
     //Booleans
     public static boolean isMaster;

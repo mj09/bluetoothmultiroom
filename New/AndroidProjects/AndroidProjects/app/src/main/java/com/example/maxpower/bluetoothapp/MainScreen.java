@@ -1,9 +1,12 @@
 package com.example.maxpower.bluetoothapp;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,14 +20,18 @@ import java.util.ArrayList;
 public class MainScreen extends AppCompatActivity {
     public final static ArrayList<Boolean> hasSent = new ArrayList<>();
     public final static ArrayList<Integer> streamerList = new ArrayList<>();
-    public final static int bufferSize = 7000;
+    public final static int bufferSize = 44000;
     private final static int REQUEST_ENABLE_BT = 1;
     private final static String TAG = "MainScreen";
     public static BluetoothAdapter bluetoothAdapter;
+    public static boolean isSlave;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        getSampleRate();
+        getOptimalBufferSize();
+        isSlave = true;
         ActionBar actionBar = getSupportActionBar();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0000FF")));
@@ -55,6 +62,7 @@ public class MainScreen extends AppCompatActivity {
                 }
                 else {
                     Log.e(TAG, "buttonSlave clicked");
+                    isSlave = true;
                     startActivity(new Intent(MainScreen.this, SlaveActivity.class));
                 }
             }
@@ -73,6 +81,7 @@ public class MainScreen extends AppCompatActivity {
                     //go to master slave activity
                     Log.e(TAG, "buttonMasterSlave clicked");
                     VariablesAndMethods.isMaster = false;
+                    isSlave = false;
                     startActivity(new Intent(MainScreen.this, MasterSlaveActivity.class));
                 }
             }
@@ -102,6 +111,30 @@ public class MainScreen extends AppCompatActivity {
             Toast.makeText(MainScreen.this, "Bluetooth is already enabled", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void getSampleRate() {
+        if(Build.VERSION.SDK_INT >= 17) {
+            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            String sampleRateStr = audioManager.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);
+            VariablesAndMethods.sampleRateofDevice = Integer.parseInt(sampleRateStr);
+            if (VariablesAndMethods.sampleRateofDevice == 0)
+                VariablesAndMethods.sampleRateofDevice = 44000;
+            Log.e(TAG, "Samplerate" + VariablesAndMethods.sampleRateofDevice);
+            Toast.makeText(MainScreen.this, "Samplerate of device: " + sampleRateStr, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getOptimalBufferSize() {
+        if(Build.VERSION.SDK_INT >= 17) {
+            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            String framesPerBufferStr = audioManager.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);
+            VariablesAndMethods.framesPerBuffer = Integer.parseInt(framesPerBufferStr);
+            if (VariablesAndMethods.framesPerBuffer == 0)
+                VariablesAndMethods.framesPerBuffer = 256;
+            Toast.makeText(MainScreen.this, "FramesPerBuffer of device: " + framesPerBufferStr, Toast.LENGTH_LONG).show();
+            }
+        }
+
 
     public static void setStreamerList(int x) {
         streamerList.add(x);

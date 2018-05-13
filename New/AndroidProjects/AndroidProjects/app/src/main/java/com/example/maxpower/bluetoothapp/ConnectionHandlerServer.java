@@ -15,9 +15,10 @@ public class ConnectionHandlerServer extends Thread {
   //  private final InputStream inputStream;
     public static InputStream inputStream;
     public static boolean connectionHandlerBoolean = true;
+    private int numberOfMsgs;
 
-    int minSize = AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-    AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, minSize, AudioTrack.MODE_STREAM);
+    private static int minSize = AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+    public static AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, minSize, AudioTrack.MODE_STREAM);
 
     public ConnectionHandlerServer(BluetoothSocket socket) {
         bluetoothSocket = socket;
@@ -35,12 +36,20 @@ public class ConnectionHandlerServer extends Thread {
     public void run() {
         Log.e(TAG, "Begin ConnectionHandlerServer");
        byte[] buffer = new byte[MainScreen.bufferSize];
+       byte[] temp = new byte[MainScreen.bufferSize * 4];
         int count;
+        int tempcount;
+        int startIndex = 0;
+        numberOfMsgs = 0;
         audioTrack.play();
         try {
             while ((count = inputStream.read(buffer)) != -1) {
+               // System.arraycopy(buffer, 0, temp, startIndex, buffer.length);
+
                 audioTrack.write(buffer, 0, count);
+
             }
+            numberOfMsgs++;
         } catch (IOException e) {
 
         }
