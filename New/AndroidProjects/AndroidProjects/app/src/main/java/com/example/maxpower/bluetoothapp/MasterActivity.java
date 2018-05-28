@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -18,19 +19,32 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class MasterActivity extends AppCompatActivity {
 
     private final static String TAG = "MasterActivity";
-
+    public static byte[] preload;
     public static File soundFile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master);
 
-        VariablesAndMethods.filePath = Environment.getExternalStorageDirectory() + "/Music/song1.wav";
+        VariablesAndMethods.filePath = Environment.getExternalStorageDirectory() + "/Music/mono16bit24000.wav";
         soundFile = new File(VariablesAndMethods.filePath);
+        if(Build.VERSION.SDK_INT > 25) {
+            Path path = Paths.get(VariablesAndMethods.filePath);
+            try {
+                preload = Files.readAllBytes(path);
+                Log.e(TAG, "File is preloaded");
+            } catch (IOException e) {
+                Log.e(TAG, "Couldnt preload file");
+            }
+        }
         VariablesAndMethods.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Master Device");

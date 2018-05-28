@@ -51,6 +51,7 @@ public class SingletonAudioStream {
             producerMasterSlaveThread.start();
         }
     }
+
     public void streamMusic(final OutputStream outputStream) {
         Thread consumerThread = new Thread(new Runnable() {
             @Override

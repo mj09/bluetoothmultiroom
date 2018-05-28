@@ -4,10 +4,17 @@ import android.bluetooth.BluetoothSocket;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class ConnectionHandlerServer extends Thread {
     private static final String TAG = "ConnectionHandlerServer";
@@ -15,15 +22,17 @@ public class ConnectionHandlerServer extends Thread {
   //  private final InputStream inputStream;
     public static InputStream inputStream;
     public static boolean connectionHandlerBoolean = true;
-    private int numberOfMsgs;
+ //   ArrayList<byte[]> byteArray = new ArrayList<>();
+ //   private AudioPlay audioPlay = new AudioPlay();
 
-    private static int minSize = AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-    public static AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, minSize, AudioTrack.MODE_STREAM);
+    public byte[] temp = new byte[MainScreen.bufferSize];
+    private static int minSize = AudioTrack.getMinBufferSize(24000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+    public static AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 24000, AudioFormat.CHANNEL_OUT_MONO,
+            AudioFormat.ENCODING_PCM_16BIT, MainScreen.bufferSize, AudioTrack.MODE_STREAM);
 
     public ConnectionHandlerServer(BluetoothSocket socket) {
         bluetoothSocket = socket;
         InputStream tmpIn = null;
-        Log.e(TAG, "buffersize " + minSize);
         try {
             tmpIn = socket.getInputStream();
             Log.e(TAG, "Inputstream created");
@@ -35,21 +44,21 @@ public class ConnectionHandlerServer extends Thread {
 
     public void run() {
         Log.e(TAG, "Begin ConnectionHandlerServer");
-       byte[] buffer = new byte[MainScreen.bufferSize];
-       byte[] temp = new byte[MainScreen.bufferSize * 4];
+        byte[] buffer = new byte[MainScreen.bufferSize];
         int count;
-        int tempcount;
-        int startIndex = 0;
-        numberOfMsgs = 0;
         audioTrack.play();
         try {
             while ((count = inputStream.read(buffer)) != -1) {
-               // System.arraycopy(buffer, 0, temp, startIndex, buffer.length);
+                while(!MainScreen.control);
 
-                audioTrack.write(buffer, 0, count);
+                    audioTrack.write(buffer, 0, count);
 
+                  //  audioPlay.playMusic(buffer, count);
+
+                  //  temp = Arrays.copyOf(buffer, count);
+                    Log.e(TAG, "Received bytes " + buffer.toString() + " buffer.length: " + buffer.length +
+                    "count: " + count);
             }
-            numberOfMsgs++;
         } catch (IOException e) {
 
         }

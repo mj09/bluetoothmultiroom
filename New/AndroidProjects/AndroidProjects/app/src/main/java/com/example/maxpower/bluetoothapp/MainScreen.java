@@ -20,18 +20,19 @@ import java.util.ArrayList;
 public class MainScreen extends AppCompatActivity {
     public final static ArrayList<Boolean> hasSent = new ArrayList<>();
     public final static ArrayList<Integer> streamerList = new ArrayList<>();
-    public final static int bufferSize = 44000;
+    public final static int bufferSize = 88000;
     private final static int REQUEST_ENABLE_BT = 1;
     private final static String TAG = "MainScreen";
     public static BluetoothAdapter bluetoothAdapter;
     public static boolean isSlave;
+    public static boolean control = true;
+    public static boolean control2 = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         getSampleRate();
         getOptimalBufferSize();
-        isSlave = true;
         ActionBar actionBar = getSupportActionBar();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0000FF")));
